@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
+    /**
+     * @SWG\Get(
+     *     path="/users",
+     *     operationId="/users",
+     *     tags={"search all users"},
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returns all users "
+     *     ),
+     * )
+     */
+
     public function showAllUsers()
     {
         $res = array(
@@ -19,6 +31,19 @@ class UserController extends Controller
         return response()->json($res);
     }
 
+
+    /**
+     * @SWG\Get(
+     *     path="/users/{userId}",
+     *     operationId="/users/{userId}",
+     *     tags={"search one users"},
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returns specific users "
+     *     ),
+     * )
+     */
+
     public function showOneUser($id)
     {
         $res = array(
@@ -28,6 +53,55 @@ class UserController extends Controller
         );
         return response()->json($res);
     }
+
+
+
+    /**
+     * @SWG\Post(
+     *     path="/users",
+     *     operationId="/users",
+     *     tags={"Create a new user"},
+     *     @SWG\Parameter(
+     *         name="USER_FIRST_NAME",
+     *         in="body",
+     *         description="The user first name parameter",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_LAST_NAME",
+     *         in="body",
+     *         description=" user last name parameter",
+     *         required=false,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_EMAIL",
+     *         in="body",
+     *         description=" user email id parameter",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_PASSWORD",
+     *         in="body",
+     *         description=" user password parameter",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_TYPE",
+     *         in="body",
+     *         description=" user type parameter",
+     *         required=true,
+     *         @SWG\Schema(type="number")
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returns user id"
+     *     ),
+     * )
+     */
 
     public function create(Request $request)
     {
@@ -51,6 +125,55 @@ class UserController extends Controller
 
         return response()->json($res, 201);
     }
+
+
+
+    /**
+     * @SWG\Put(
+     *     path="/users/{userId}",
+     *     operationId="/users/{userId}",
+     *     tags={"Update  a  user"},
+     *     @SWG\Parameter(
+     *         name="USER_FIRST_NAME",
+     *         in="body",
+     *         description="The user first name parameter",
+     *         required=false,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_LAST_NAME",
+     *         in="body",
+     *         description=" user last name parameter",
+     *         required=false,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_EMAIL",
+     *         in="body",
+     *         description=" user email id parameter",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_PASSWORD",
+     *         in="body",
+     *         description=" user password parameter",
+     *         required=true,
+     *         @SWG\Schema(type="string")
+     *     ),
+     *     @SWG\Parameter(
+     *         name="USER_TYPE",
+     *         in="body",
+     *         description=" user type parameter",
+     *         required=true,
+     *         @SWG\Schema(type="number")
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returns user id"
+     *     ),
+     * )
+     */
 
     public function update($id, Request $request)
     {

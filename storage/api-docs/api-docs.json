@@ -1,0 +1,156 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Dicussion API",
+        "contact": {
+            "name": "Support Team",
+            "email": "support@creativewebie.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "tags": [
+                    "search all users"
+                ],
+                "operationId": "/users",
+                "responses": {
+                    "200": {
+                        "description": "Returns all users "
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Create a new user"
+                ],
+                "operationId": "/users",
+                "parameters": [
+                    {
+                        "name": "USER_FIRST_NAME",
+                        "in": "body",
+                        "description": "The user first name parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_LAST_NAME",
+                        "in": "body",
+                        "description": " user last name parameter",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_EMAIL",
+                        "in": "body",
+                        "description": " user email id parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_PASSWORD",
+                        "in": "body",
+                        "description": " user password parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_TYPE",
+                        "in": "body",
+                        "description": " user type parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns user id"
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "get": {
+                "tags": [
+                    "search one users"
+                ],
+                "operationId": "/users/{userId}",
+                "responses": {
+                    "200": {
+                        "description": "Returns specific users "
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Update  a  user"
+                ],
+                "operationId": "/users/{userId}",
+                "parameters": [
+                    {
+                        "name": "USER_FIRST_NAME",
+                        "in": "body",
+                        "description": "The user first name parameter",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_LAST_NAME",
+                        "in": "body",
+                        "description": " user last name parameter",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_EMAIL",
+                        "in": "body",
+                        "description": " user email id parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_PASSWORD",
+                        "in": "body",
+                        "description": " user password parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "USER_TYPE",
+                        "in": "body",
+                        "description": " user type parameter",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns user id"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}
