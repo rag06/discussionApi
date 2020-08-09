@@ -40,9 +40,8 @@ class JsonResponseMiddleware
 
         // Get the response
         $response = $next($request);
-
         // If the response is not strictly a JsonResponse, we make it
-        if (!$response instanceof JsonResponse) {
+        if (!$response instanceof JsonResponse && $_SERVER['REQUEST_URI'] !== '/api/documentation' &&  $_SERVER['REQUEST_URI'] !== '/docs') {
             $response = $this->factory->json(
                 $response->content(),
                 $response->status(),

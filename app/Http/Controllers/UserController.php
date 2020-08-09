@@ -11,8 +11,8 @@ class UserController extends Controller
 
     /**
      * @SWG\Get(
-     *     path="/users",
-     *     operationId="/users",
+     *     path="/api/v1/users",
+     *     operationId="/api/v1/users",
      *     tags={"search all users"},
      *     @SWG\Response(
      *         response="200",
@@ -34,8 +34,8 @@ class UserController extends Controller
 
     /**
      * @SWG\Get(
-     *     path="/users/{userId}",
-     *     operationId="/users/{userId}",
+     *     path="/api/v1/users/{userId}",
+     *     operationId="/api/v1/users/{userId}",
      *     tags={"search one users"},
      *     @SWG\Response(
      *         response="200",
@@ -58,8 +58,8 @@ class UserController extends Controller
 
     /**
      * @SWG\Post(
-     *     path="/users",
-     *     operationId="/users",
+     *     path="/api/v1/users",
+     *     operationId="/api/v1/users",
      *     tags={"Create a new user"},
      *     @SWG\Parameter(
      *         name="USER_FIRST_NAME",
@@ -130,8 +130,8 @@ class UserController extends Controller
 
     /**
      * @SWG\Put(
-     *     path="/users/{userId}",
-     *     operationId="/users/{userId}",
+     *     path="/api/v1/users/{userId}",
+     *     operationId="/api/v1/users/{userId}",
      *     tags={"Update  a  user"},
      *     @SWG\Parameter(
      *         name="USER_FIRST_NAME",

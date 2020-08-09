@@ -15,9 +15,6 @@ $router->get('/', function () use ($router) {
     return  'Welcome to Discussion Apis';
 });
 
-$router->get('/api/documentation', function () use ($router) {
-    return view('vendor/swagger-lume/index', ['urlToDocs' => 'http://localhost:8000/docs']);
-});
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get('channels',  ['uses' => 'ChannelController@showAllChannels']);

@@ -9,12 +9,12 @@
         "version": "1.0"
     },
     "paths": {
-        "/users": {
+        "/api/v1/users": {
             "get": {
                 "tags": [
                     "search all users"
                 ],
-                "operationId": "/users",
+                "operationId": "/api/v1/users",
                 "responses": {
                     "200": {
                         "description": "Returns all users "
@@ -25,7 +25,7 @@
                 "tags": [
                     "Create a new user"
                 ],
-                "operationId": "/users",
+                "operationId": "/api/v1/users",
                 "parameters": [
                     {
                         "name": "USER_FIRST_NAME",
@@ -80,12 +80,12 @@
                 }
             }
         },
-        "/users/{userId}": {
+        "/api/v1/users/{userId}": {
             "get": {
                 "tags": [
                     "search one users"
                 ],
-                "operationId": "/users/{userId}",
+                "operationId": "/api/v1/users/{userId}",
                 "responses": {
                     "200": {
                         "description": "Returns specific users "
@@ -96,7 +96,7 @@
                 "tags": [
                     "Update  a  user"
                 ],
-                "operationId": "/users/{userId}",
+                "operationId": "/api/v1/users/{userId}",
                 "parameters": [
                     {
                         "name": "USER_FIRST_NAME",
