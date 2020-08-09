@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 class PostLikesController extends Controller
 {
 
+    public function getPostLikesCount($postid) {
+
+        $postLike = PostLikes::where('POST_LIKE_POST_ID', $postid)->get();
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $postLike->count()
+        );
+
+        return response()->json($res, 200);
+    }
+
     public function showAllPostLikes()
     {
         return response()->json(PostLikes::all());
@@ -27,8 +39,13 @@ class PostLikesController extends Controller
 
         $data = $request->all();
         $postLike = PostLikes::create($data);
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $postLike
+        );
 
-        return response()->json($postLike, 201);
+        return response()->json($res, 201);
     }
 
     public function update($id, Request $request)
@@ -37,15 +54,22 @@ class PostLikesController extends Controller
         $data = $request->all();
         $postLike = PostLikes::findOrFail($id);
 
-        $author->update($data);
+        $postLike->update($data);
 
         return response()->json($postLike, 200);
     }
 
-    public function delete($id)
+    public function delete($id, $userId)
     {
-        PostLikes::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        PostLikes::where(['POST_LIKE_POST_ID'=> $id,
+        'POST_LIKE_USER_ID'=> $userId])->delete();
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => 'Deleted Successfully'
+        );
+
+        return response($res, 200);
     }
 
     private function uuid()

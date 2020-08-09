@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channels;
+use App\Users;
 use Illuminate\Http\Request;
 
 class ChannelController extends Controller
@@ -10,12 +11,63 @@ class ChannelController extends Controller
 
     public function showAllChannels()
     {
-        return response()->json(Channels::all());
+        $result = array(
+            "records" => Channels::all(),
+            "objects" => array()
+        );
+        if (!empty($result['records'])) {
+            $userIds = array();
+            foreach ($result['records'] as $key => $value) {
+                if ($value->CHANNEL_ADMIN_ID && !in_array($value->CHANNEL_ADMIN_ID, $userIds)) {
+                    array_push($userIds, $value->CHANNEL_ADMIN_ID);
+                }
+            }
+            $userObjects = Users::whereIn('USER_ID', $userIds)->get();
+            if (!empty($userObjects)) {
+
+                foreach ($userObjects as $key => $value) {
+                    $result['objects'][$value->USER_ID] = $value;
+                }
+            }
+
+        }
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $result
+        );
+        return response()->json($res);
     }
 
     public function showOneChannel($id)
     {
-        return response()->json(Channels::where('CHANNEL_ID', $id)->get());
+        $result = array(
+            "records" =>  Channels::where('CHANNEL_ID', $id)->get(),
+            "objects" => array()
+        );
+        if (!empty($result['records'])) {
+            $userIds = array();
+            foreach ($result['records'] as $key => $value) {
+                if ($value->CHANNEL_ADMIN_ID && !in_array($value->CHANNEL_ADMIN_ID, $userIds)) {
+                    array_push($userIds, $value->CHANNEL_ADMIN_ID);
+                }
+            }
+            $userObjects = Users::whereIn('USER_ID', $userIds)->get();
+            if (!empty($userObjects)) {
+
+                foreach ($userObjects as $key => $value) {
+                    $result['objects'][$value->USER_ID] = $value;
+                }
+            }
+
+        }
+
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $result
+        );
+        return response()->json($res);
     }
 
     public function create(Request $request)
@@ -30,24 +82,43 @@ class ChannelController extends Controller
         $data['CHANNEL_STATUS'] = 1;
         $channel = Channels::create($data);
 
-        return response()->json($channel, 201);
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $channel->CHANNEL_ID
+        );
+
+        return response()->json($res, 201);
     }
 
     public function update($id, Request $request)
     {
 
         $data = $request->all();
-        $channel = Channels::findOrFail($id);
+        $channel = Channels::where('CHANNEL_ID', $id)->firstOrFail();
+        $channel->where('CHANNEL_ID', $id)->update($data);
 
-        $author->update($data);
 
-        return response()->json($channel, 200);
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $channel->CHANNEL_ID
+        );
+
+        return response()->json($res, 200);
     }
 
     public function delete($id)
     {
-        Channels::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        Channels::where('CHANNEL_ID', $id)->delete();
+
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => 'Deleted Successfully'
+        );
+
+        return response($res, 200);
     }
 
     private function uuid()

@@ -2,49 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Posts;
+use App\Replies;
 use App\Users;
-use App\Channels;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class RepliesController extends Controller
 {
 
-    public function showAllPosts($id)
+    public function showAllreplies($id)
     {
+
         $result = array(
-            "records" =>  Posts::where('POST_CHANNEL_ID', $id)->get(),
+            "records" =>  Replies::where('POST_ID', $id)->get(),
             "objects" => array()
         );
         if (!empty($result['records'])) {
             $userIds = array();
             foreach ($result['records'] as $key => $value) {
-                if ($value->POST_USER_ID && !in_array($value->POST_USER_ID, $userIds)) {
-                    array_push($userIds, $value->POST_USER_ID);
+                if ($value->REPLY_USER_ID && !in_array($value->REPLY_USER_ID, $userIds)) {
+                    array_push($userIds, $value->REPLY_USER_ID);
                 }
             }
             $userObjects = Users::whereIn('USER_ID', $userIds)->get();
-
-            $channelIds = array();
-            foreach ($result['records'] as $key => $value) {
-                if ($value->POST_CHANNEL_ID && !in_array($value->POST_CHANNEL_ID, $channelIds)) {
-                    array_push($channelIds, $value->POST_CHANNEL_ID);
-                }
-            }
-            $channelObjects = Channels::whereIn('CHANNEL_ID', $channelIds)->get();
-
-
-            if (!empty($channelObjects)) {
-                $result['objects']['channels'] = array();
-                foreach ($channelObjects as $key => $value) {
-                    $result['objects']['channels'][$value->CHANNEL_ID] = $value;
-                }
-            }
-
             if (!empty($userObjects)) {
-                $result['objects']['users'] = array();
+
                 foreach ($userObjects as $key => $value) {
-                    $result['objects']['users'][$value->USER_ID] = $value;
+                    $result['objects'][$value->USER_ID] = $value;
                 }
             }
 
@@ -56,45 +39,27 @@ class PostController extends Controller
             "result" => $result
         );
         return response()->json($res);
-
     }
 
-    public function showOnePost($id)
+    public function showOnereply($id)
     {
 
         $result = array(
-            "records" =>  Posts::where('POST_ID', $id)->get(),
+            "records" =>  Replies::where('REPLY_ID', $id)->get(),
             "objects" => array()
         );
         if (!empty($result['records'])) {
             $userIds = array();
             foreach ($result['records'] as $key => $value) {
-                if ($value->POST_USER_ID && !in_array($value->POST_USER_ID, $userIds)) {
-                    array_push($userIds, $value->POST_USER_ID);
+                if ($value->REPLY_USER_ID && !in_array($value->REPLY_USER_ID, $userIds)) {
+                    array_push($userIds, $value->REPLY_USER_ID);
                 }
             }
             $userObjects = Users::whereIn('USER_ID', $userIds)->get();
-
-            $channelIds = array();
-            foreach ($result['records'] as $key => $value) {
-                if ($value->POST_CHANNEL_ID && !in_array($value->POST_CHANNEL_ID, $channelIds)) {
-                    array_push($channelIds, $value->POST_CHANNEL_ID);
-                }
-            }
-            $channelObjects = Channels::whereIn('CHANNEL_ID', $channelIds)->get();
-
-
-            if (!empty($channelObjects)) {
-                $result['objects']['channels'] = array();
-                foreach ($channelObjects as $key => $value) {
-                    $result['objects']['channels'][$value->CHANNEL_ID] = $value;
-                }
-            }
-
             if (!empty($userObjects)) {
-                $result['objects']['users'] = array();
+
                 foreach ($userObjects as $key => $value) {
-                    $result['objects']['users'][$value->USER_ID] = $value;
+                    $result['objects'][$value->USER_ID] = $value;
                 }
             }
 
@@ -111,20 +76,20 @@ class PostController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'POST_NAME' => 'required',
-            'POST_CHANNEL_ID' => 'required',
-            'POST_USER_ID' => 'required',
+            'POST_ID' => 'required',
+            'REPLY_TEXT' => 'required',
+            'REPLY_USER_ID' => 'required',
         ]);
 
         $data = $request->all();
-        $data['POST_ID'] = $this->uuid();
-        $data['POST_STATUS'] = 1;
-        $post = Posts::create($data);
+        $data['REPLY_ID'] = $this->uuid();
+        $data['REPLY_STATUS'] = 1;
+        $reply = Replies::create($data);
 
         $res = array(
             "status" => 200,
             'success' => true,
-            "result" => $post->POST_ID
+            "result" => $reply->REPLY_ID
         );
 
         return response()->json($res, 201);
@@ -134,15 +99,13 @@ class PostController extends Controller
     {
 
         $data = $request->all();
-        $post = Posts::where('POST_ID', $id)->firstOrFail();
-
-        $post->update($data);
-
+        $reply = Replies::where('REPLY_ID', $id)->firstOrFail();
+        $reply->where('REPLY_ID', $id)->update($data);
 
         $res = array(
             "status" => 200,
             'success' => true,
-            "result" => $channel->POST_ID
+            "result" => $reply->REPLY_ID
         );
 
         return response()->json($res, 200);
@@ -150,7 +113,8 @@ class PostController extends Controller
 
     public function delete($id)
     {
-        Posts::where('POST_ID', $id)->delete();
+        Replies::where('REPLY_ID', $id)->delete();
+
         $res = array(
             "status" => 200,
             'success' => true,

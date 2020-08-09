@@ -12,7 +12,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return  'Welcome to Discussion Apis';
 });
 
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
@@ -42,16 +42,17 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->get('subcribers',  ['uses' => 'SubcribersController@showAllSubcribers']);
 
     $router->get('subcribers/{id}', ['uses' => 'SubcribersController@showOneSubcriber']);
+    $router->get('subcribers/{channelId}/count', ['uses' => 'SubcribersController@getSubcribersCount']);
 
     $router->post('subcribers', ['uses' => 'SubcribersController@create']);
 
-    $router->delete('subcribers/{id}', ['uses' => 'SubcribersController@delete']);
+    $router->delete('subcribers/{id}/{channelId}', ['uses' => 'SubcribersController@delete']);
 
     $router->put('subcribers/{id}', ['uses' => 'SubcribersController@update']);
 
 
 
-    $router->get('posts',  ['uses' => 'PostController@showAllPosts']);
+    $router->get('posts/channel/{id}',  ['uses' => 'PostController@showAllPosts']);
 
     $router->get('posts/{id}', ['uses' => 'PostController@showOnePost']);
 
@@ -60,5 +61,19 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->delete('posts/{id}', ['uses' => 'PostController@delete']);
 
     $router->put('posts/{id}', ['uses' => 'PostController@update']);
+
+
+    $router->get('postlikes/{postid}/count', ['uses' => 'PostLikesController@getPostLikesCount']);
+    $router->post('postlikes', ['uses' => 'PostLikesController@create']);
+    $router->delete('postlikes/{id}/{userId}', ['uses' => 'PostLikesController@delete']);
+
+
+    $router->get('replies/post/{id}',  ['uses' => 'RepliesController@showAllreplies']);
+    $router->get('replies/{id}', ['uses' => 'RepliesController@showOnereply']);
+    $router->post('replies', ['uses' => 'RepliesController@create']);
+    $router->delete('replies/{id}', ['uses' => 'RepliesController@delete']);
+    $router->put('replies/{id}', ['uses' => 'RepliesController@update']);
+
+
 
   });

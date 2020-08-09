@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 
 class SubcribersController extends Controller
 {
+    public function getSubcribersCount($channelId) {
+
+        $subcriber = Subcribers::where('SUBSCRIBER_CHANNEL_ID', $channelId)->get();
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $subcriber->count()
+        );
+
+        return response()->json($res, 200);
+    }
 
     public function showAllSubcribers()
     {
@@ -27,8 +38,13 @@ class SubcribersController extends Controller
 
         $data = $request->all();
         $subcriber = Subcribers::create($data);
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $subcriber
+        );
 
-        return response()->json($subcriber, 201);
+        return response()->json($res, 201);
     }
 
     public function update($id, Request $request)
@@ -37,15 +53,22 @@ class SubcribersController extends Controller
         $data = $request->all();
         $subcriber = Subcribers::findOrFail($id);
 
-        $author->update($data);
+        $subcriber->update($data);
 
         return response()->json($subcriber, 200);
     }
 
-    public function delete($id)
+    public function delete($id, $channelId)
     {
-        Subcribers::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        Subcribers::where(['SUBSCRIBER_USERID'=> $id,
+        'SUBSCRIBER_CHANNEL_ID'=> $channelId ])->delete();
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => 'Deleted Successfully'
+        );
+
+        return response($res, 200);
     }
 
     private function uuid()

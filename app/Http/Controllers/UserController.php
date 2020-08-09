@@ -11,12 +11,22 @@ class UserController extends Controller
 
     public function showAllUsers()
     {
-        return response()->json(Users::all());
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => Users::all()
+        );
+        return response()->json($res);
     }
 
     public function showOneUser($id)
     {
-        return response()->json(Users::where('USER_ID', $id)->get());
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => Users::where('USER_ID', $id)->get()
+        );
+        return response()->json($res);
     }
 
     public function create(Request $request)
@@ -33,24 +43,43 @@ class UserController extends Controller
         $data['USER_PASSWORD'] = Hash::make($data['USER_PASSWORD']);
         $user = Users::create($data);
 
-        return response()->json($user, 201);
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $user->USER_ID
+        );
+
+        return response()->json($res, 201);
     }
 
     public function update($id, Request $request)
     {
 
         $data = $request->all();
-        $channel = Users::findOrFail($id);
+        $users = Users::where('USER_ID', $id)->firstOrFail();
+        $users->where('USER_ID', $id)->update($data);
 
-        $author->update($data);
 
-        return response()->json($channel, 200);
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => $user->USER_ID
+        );
+
+        return response()->json($res, 200);
     }
 
     public function delete($id)
     {
-        Users::findOrFail($id)->delete();
-        return response('Deleted Successfully', 200);
+        Users::where('USER_ID', $id)->delete();
+
+        $res = array(
+            "status" => 200,
+            'success' => true,
+            "result" => 'Deleted Successfully'
+        );
+
+        return response($res, 200);
     }
 
     private function uuid()
